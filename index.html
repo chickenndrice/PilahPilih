@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PilahPilih App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page">
+    <div class="app">
+        <!-- TOPBAR SHARED ACROSS ALL STATES -->
+        <div class="app-topbar">
+            <div class="traffic r"></div>
+            <div class="traffic y"></div>
+            <div class="traffic g"></div>
+            <div class="url">pilahpilih.app</div>
+        </div>
+
+        <!-- ==============================================
+             STATE 1: WELCOME
+             ============================================== -->
+        <div class="app-body active" id="state-welcome">
+            <div class="app-header">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <rect x="5" y="8" width="14" height="12" rx="3" fill="white" stroke="#1F1B2E" stroke-width="1.5"/>
+                            <circle cx="9" cy="13" r="1.5" fill="#1F1B2E"/>
+                            <circle cx="15" cy="13" r="1.5" fill="#1F1B2E"/>
+                            <line x1="12" y1="4" x2="12" y2="8" stroke="#1F1B2E" stroke-width="1.5"/>
+                            <circle cx="12" cy="4" r="1.5" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">Pilah<span class="pilih">Pilih</span></div>
+                </div>
+                <div class="badge-sdg">🌍 SDGs 4 · 12</div>
+            </div>
+
+            <div class="viewport" style="background:radial-gradient(circle at 30% 30%, #FFE9B5 0%, #FFD18A 100%);">
+                <span class="sparkle s1">✨</span>
+                <span class="sparkle s2">⭐</span>
+                <span class="sparkle s3">✨</span>
+                <span class="sparkle s4">⭐</span>
+                <div class="bubble bot-center" style="top:14px;background:#FFFDF5">Halo adik pintar! Aku <strong>Robi</strong> 👋</div>
+                <div class="robi-wrap">
+                    <svg class="robi robi-lg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="100" y1="50" x2="100" y2="25" stroke="#1F1B2E" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="100" cy="22" r="8" fill="#FF6B6B" stroke="#1F1B2E" stroke-width="3"/>
+                        <path d="M96 22 L100 18 L104 22" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="50" y="50" width="100" height="80" rx="20" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="4"/>
+                        <circle cx="66" cy="105" r="6" fill="#FF6B6B" opacity=".7"/>
+                        <circle cx="134" cy="105" r="6" fill="#FF6B6B" opacity=".7"/>
+                        <rect x="70" y="75" width="22" height="22" rx="6" fill="white" stroke="#1F1B2E" stroke-width="3"/>
+                        <rect x="108" y="75" width="22" height="22" rx="6" fill="white" stroke="#1F1B2E" stroke-width="3"/>
+                        <circle cx="83" cy="88" r="5" fill="#1F1B2E"/>
+                        <circle cx="121" cy="88" r="5" fill="#1F1B2E"/>
+                        <circle cx="85" cy="86" r="2" fill="white"/>
+                        <circle cx="123" cy="86" r="2" fill="white"/>
+                        <path d="M85 112 Q100 124 115 112" stroke="#1F1B2E" stroke-width="4" fill="none" stroke-linecap="round"/>
+                        <rect x="88" y="130" width="24" height="10" fill="#1F1B2E"/>
+                        <rect x="55" y="140" width="90" height="50" rx="14" fill="#4D96FF" stroke="#1F1B2E" stroke-width="4"/>
+                        <circle cx="100" cy="165" r="10" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/>
+                        <rect x="38" y="148" width="18" height="14" rx="7" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/>
+                        <rect x="144" y="148" width="18" height="14" rx="7" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bins">
+                <div class="bin green">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B9E8BE" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#5FC16A" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div class="label">ORGANIK</div>
+                </div>
+                <div class="bin yellow">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#FFE9A0" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div class="label">PLASTIK</div>
+                </div>
+                <div class="bin blue">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B3D1FF" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#4D96FF" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div class="label">KERTAS</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn start btn-start-game">▶ MULAI MAIN</button>
+                <button class="btn ghost btn-guide">ℹ Panduan</button>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             STATE 2: SCANNING
+             ============================================== -->
+        <div class="app-body" id="state-scanning">
+            <div class="app-header">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="8" width="14" height="12" rx="3" fill="white" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="9" cy="13" r="1.5" fill="#1F1B2E"/><circle cx="15" cy="13" r="1.5" fill="#1F1B2E"/><line x1="12" y1="4" x2="12" y2="8" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="12" cy="4" r="1.5" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="1.5"/></svg>
+                    </div>
+                    <div class="logo-text">Pilah<span class="pilih">Pilih</span></div>
+                </div>
+                <div class="badge-sdg">🌍 SDGs 4 · 12</div>
+            </div>
+
+            <!-- Interactivity: click viewport to fail, or click bins to detect -->
+            <div class="viewport scanning" id="vp-scan">
+                <video id="webcamVideo" autoplay playsinline muted></video>
+                <span class="live-tag" style="z-index:2">LIVE</span>
+                <div class="scan-corners" style="z-index:2"><span></span></div>
+                <div class="scan-line" style="z-index:2"></div>
+                <div style="position:relative; z-index:2; color:white;text-align:center;font-size:22px;font-weight:500;letter-spacing:.3px">
+                    <div style="font-size:64px;margin-bottom:8px">👀</div>
+                    Tunjukkan bendamu ke kamera ya!
+                </div>
+                <div class="conf-pill" style="z-index:2">Menganalisis<span style="margin-left:6px">...</span></div>
+            </div>
+
+            <div class="bins">
+                <div class="bin green sim-organic">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B9E8BE" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#5FC16A" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div class="label">ORGANIK</div>
+                </div>
+                <div class="bin yellow sim-plastic">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#FFE9A0" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div class="label">PLASTIK</div>
+                </div>
+                <div class="bin blue sim-paper">
+                    <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B3D1FF" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#4D96FF" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg>
+                    <div class="label">KERTAS</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn stop btn-stop">⏸ BERHENTI</button>
+                <button class="btn ghost">🔊 Volume</button>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             STATE 3: PLASTIC
+             ============================================== -->
+        <div class="app-body" id="state-plastic">
+            <div class="app-header">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="8" width="14" height="12" rx="3" fill="white" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="9" cy="13" r="1.5" fill="#1F1B2E"/><circle cx="15" cy="13" r="1.5" fill="#1F1B2E"/><line x1="12" y1="4" x2="12" y2="8" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="12" cy="4" r="1.5" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="1.5"/></svg>
+                    </div>
+                    <div class="logo-text">Pilah<span class="pilih">Pilih</span></div>
+                </div>
+                <div class="badge-sdg" style="background:var(--yellow)">🎉 Terdeteksi!</div>
+            </div>
+
+            <div class="viewport detected-yellow">
+                <div class="bubble bot-left">Yeay! Itu <strong>botol plastik</strong>! 🎉</div>
+                <span class="sparkle s2">✨</span>
+                <span class="sparkle s4">⭐</span>
+                <div class="obj">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <rect x="34" y="6" width="12" height="10" rx="2" fill="#C5E8F7" stroke="#1F1B2E" stroke-width="2.5"/>
+                        <path d="M30 16 L50 16 L52 26 L54 70 Q54 74 50 74 L30 74 Q26 74 26 70 L28 26 Z" fill="#9ED9F0" stroke="#1F1B2E" stroke-width="2.5" stroke-linejoin="round"/>
+                        <rect x="30" y="40" width="20" height="14" fill="white" stroke="#1F1B2E" stroke-width="2"/>
+                        <line x1="32" y1="45" x2="48" y2="45" stroke="#1F1B2E" stroke-width="1.5"/>
+                        <line x1="32" y1="49" x2="44" y2="49" stroke="#1F1B2E" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="conf-pill">Yakin <span class="pct">92%</span> · Botol Plastik</div>
+            </div>
+
+            <div class="bins">
+                <div class="bin green"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B9E8BE" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#5FC16A" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">ORGANIK</div></div>
+                <div class="bin yellow active"><span class="stars">✨</span><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="white" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#F2A900" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">TONG KUNING!</div></div>
+                <div class="bin blue"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B3D1FF" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#4D96FF" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">KERTAS</div></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn stop btn-stop">⏸ BERHENTI</button>
+                <button class="btn ghost btn-start-game">🔄 LANJUT MAIN</button>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             STATE 4: PAPER
+             ============================================== -->
+        <div class="app-body" id="state-paper">
+            <div class="app-header">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="8" width="14" height="12" rx="3" fill="white" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="9" cy="13" r="1.5" fill="#1F1B2E"/><circle cx="15" cy="13" r="1.5" fill="#1F1B2E"/><line x1="12" y1="4" x2="12" y2="8" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="12" cy="4" r="1.5" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="1.5"/></svg>
+                    </div>
+                    <div class="logo-text">Pilah<span class="pilih">Pilih</span></div>
+                </div>
+                <div class="badge-sdg" style="background:var(--blue);color:white">🎉 Terdeteksi!</div>
+            </div>
+
+            <div class="viewport detected-blue">
+                <div class="bubble bot-right">Hore! Itu <strong>kertas</strong>! 📄</div>
+                <span class="sparkle s1">✨</span>
+                <span class="sparkle s3">⭐</span>
+                <div class="obj">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <path d="M20 10 L54 10 L64 22 L64 70 Q64 72 62 72 L20 72 Q18 72 18 70 L18 12 Q18 10 20 10 Z" fill="white" stroke="#1F1B2E" stroke-width="2.5" stroke-linejoin="round"/>
+                        <path d="M54 10 L54 22 L64 22" stroke="#1F1B2E" stroke-width="2.5" fill="#F0F0F0" stroke-linejoin="round"/>
+                        <line x1="24" y1="32" x2="56" y2="32" stroke="#4D96FF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="24" y1="40" x2="56" y2="40" stroke="#4D96FF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="24" y1="48" x2="48" y2="48" stroke="#4D96FF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="24" y1="56" x2="56" y2="56" stroke="#4D96FF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="24" y1="64" x2="42" y2="64" stroke="#4D96FF" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="conf-pill">Yakin <span class="pct">88%</span> · Kertas</div>
+            </div>
+
+            <div class="bins">
+                <div class="bin green"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B9E8BE" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#5FC16A" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">ORGANIK</div></div>
+                <div class="bin yellow"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#FFE9A0" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">PLASTIK</div></div>
+                <div class="bin blue active"><span class="stars">✨</span><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="white" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#2767D6" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">TONG BIRU!</div></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn stop btn-stop">⏸ BERHENTI</button>
+                <button class="btn ghost btn-start-game">🔄 LANJUT MAIN</button>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             STATE 5: ORGANIC
+             ============================================== -->
+        <div class="app-body" id="state-organic">
+            <div class="app-header">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="8" width="14" height="12" rx="3" fill="white" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="9" cy="13" r="1.5" fill="#1F1B2E"/><circle cx="15" cy="13" r="1.5" fill="#1F1B2E"/><line x1="12" y1="4" x2="12" y2="8" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="12" cy="4" r="1.5" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="1.5"/></svg>
+                    </div>
+                    <div class="logo-text">Pilah<span class="pilih">Pilih</span></div>
+                </div>
+                <div class="badge-sdg" style="background:var(--green);color:white">🎉 Terdeteksi!</div>
+            </div>
+
+            <div class="viewport detected-green">
+                <div class="bubble bot-left">Wah, itu <strong>sisa makanan</strong>! 🍌</div>
+                <span class="sparkle s2">✨</span>
+                <span class="sparkle s4">⭐</span>
+                <div class="obj">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <path d="M24 18 Q18 28 22 44 Q28 60 44 64 Q56 66 60 58 Q62 54 56 54 Q44 54 36 46 Q28 36 32 24 Q32 18 28 18 Q24 16 24 18 Z" fill="#FFD93D" stroke="#1F1B2E" stroke-width="2.5" stroke-linejoin="round"/>
+                        <path d="M36 52 Q44 60 54 58" stroke="#F2A900" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M22 28 Q26 32 30 30" stroke="#F2A900" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="50" cy="56" rx="6" ry="2" fill="#F2A900" opacity=".6"/>
+                    </svg>
+                </div>
+                <div class="conf-pill">Yakin <span class="pct">90%</span> · Sisa Makanan</div>
+            </div>
+
+            <div class="bins">
+                <div class="bin green active"><span class="stars">✨</span><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="white" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#2F9A3B" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">TONG HIJAU!</div></div>
+                <div class="bin yellow"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#FFE9A0" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">PLASTIK</div></div>
+                <div class="bin blue"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B3D1FF" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#4D96FF" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">KERTAS</div></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn stop btn-stop">⏸ BERHENTI</button>
+                <button class="btn ghost btn-start-game">🔄 LANJUT MAIN</button>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             STATE 6: UNCERTAIN
+             ============================================== -->
+        <div class="app-body" id="state-uncertain">
+            <div class="app-header">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="8" width="14" height="12" rx="3" fill="white" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="9" cy="13" r="1.5" fill="#1F1B2E"/><circle cx="15" cy="13" r="1.5" fill="#1F1B2E"/><line x1="12" y1="4" x2="12" y2="8" stroke="#1F1B2E" stroke-width="1.5"/><circle cx="12" cy="4" r="1.5" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="1.5"/></svg>
+                    </div>
+                    <div class="logo-text">Pilah<span class="pilih">Pilih</span></div>
+                </div>
+                <div class="badge-sdg" style="background:var(--peach)">🤔 Hmm...</div>
+            </div>
+
+            <div class="viewport uncertain">
+                <div class="bubble bot-center">Coba tunjukkan lagi ya, <strong>adik pintar</strong>! 💡</div>
+                <div class="q-marks">
+                    <span>?</span><span>?</span><span>?</span>
+                </div>
+                <div class="conf-pill" style="background:#FFE9B5">Confidence &lt; 80% · Coba lagi</div>
+            </div>
+
+            <div class="bins">
+                <div class="bin green" style="opacity:.5"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B9E8BE" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#5FC16A" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">ORGANIK</div></div>
+                <div class="bin yellow" style="opacity:.5"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#FFE9A0" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#FFCE3C" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">PLASTIK</div></div>
+                <div class="bin blue" style="opacity:.5"><svg viewBox="0 0 64 64" fill="none"><rect x="12" y="22" width="40" height="36" rx="4" fill="#B3D1FF" stroke="#1F1B2E" stroke-width="3"/><rect x="8" y="16" width="48" height="8" rx="3" fill="#4D96FF" stroke="#1F1B2E" stroke-width="3"/><line x1="22" y1="30" x2="22" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="30" x2="32" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><line x1="42" y1="30" x2="42" y2="50" stroke="#1F1B2E" stroke-width="2.5" stroke-linecap="round"/><path d="M26 10 L38 10" stroke="#1F1B2E" stroke-width="3" stroke-linecap="round"/></svg><div class="label">KERTAS</div></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn start btn-start-game">🔄 COBA LAGI</button>
+                <button class="btn ghost btn-stop">⏸ Jeda</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
