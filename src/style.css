@@ -314,12 +314,12 @@ body::before{
   max-width:52%;
   background:rgba(255,253,245,.95);
   border:4px solid var(--ink);
-  border-radius:22px;
-  padding:14px 22px;
-  font-size:17px;
-  font-weight:500;
+  border-radius:26px;
+  padding:20px 32px;
+  font-size:24px;
+  font-weight:600;
   line-height:1.4;
-  box-shadow:4px 4px 0 var(--ink);
+  box-shadow:5px 6px 0 var(--ink);
   z-index:4;
   backdrop-filter:blur(6px);
   animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
@@ -332,12 +332,32 @@ body::before{
   border-right:4px solid var(--ink);
   border-bottom:4px solid var(--ink);
 }
-.bubble.bot-left{top:22px;left:22px}
-.bubble.bot-left::after{bottom:-13px;left:30px;transform:rotate(45deg)}
-.bubble.bot-right{top:22px;right:22px}
-.bubble.bot-right::after{bottom:-13px;right:30px;transform:rotate(45deg)}
-.bubble.bot-center{top:22px;left:50%;transform:translateX(-50%);text-align:center}
-.bubble.bot-center::after{bottom:-13px;left:50%;transform:translateX(-50%) rotate(45deg)}
+.bubble.bot-left{top:50px;left:calc(50% - 290px)}
+.bubble.bot-left::after{bottom:-15px;left:50px;transform:rotate(45deg)}
+.bubble.bot-right{top:50px;right:calc(50% - 290px)}
+.bubble.bot-right::after{bottom:-15px;right:50px;transform:rotate(45deg)}
+.bubble.bot-center{top:30px;left:50%;transform:translateX(-50%);text-align:center}
+.bubble.bot-center::after{bottom:-15px;left:50%;transform:translateX(-50%) rotate(45deg)}
+
+/* Feedback Characters (Result Pages) */
+.robi-feedback{
+  position:absolute;
+  width:210px;
+  z-index:3;
+  filter:drop-shadow(4px 6px 0 rgba(31,27,46,.25));
+  animation:float 3.2s ease-in-out infinite;
+}
+.robi-bottle{
+  width:175px;
+}
+.robi-feedback.left{
+  top:125px; /* Ditarik ke atas, boleh menabrak bubble */
+  right:calc(50% + 130px);
+}
+.robi-feedback.right{
+  top:125px;
+  left:calc(50% + 130px);
+}
 
 /* ===== BINS ROW ===== */
 .bins{
@@ -532,6 +552,7 @@ body::before{
   100%{transform:scale(1) rotate(0deg);opacity:1}
 }
 .obj svg{width:125px;height:125px}
+.obj .sampah-img{width:140px;height:140px;object-fit:contain;animation:popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));}
 
 /* Question marks — uncertain state */
 .q-marks{
@@ -586,10 +607,11 @@ body::before{
 }
 
 /* ===== SCANNING PROMPT TEXT ===== */
-.scan-emoji{
-  font-size:60px;
-  margin-bottom:10px;
+.scan-img{
+  height:90px;
+  margin-bottom:8px;
   animation:float 2.5s ease-in-out infinite;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));
 }
 .scan-text{
   font-size:22px;
