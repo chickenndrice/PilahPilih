@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = images[i % images.length];
             img.className = 'rain-item';
             
-            // Randomize size (reduced by 25%: ~225px to 415px)
-            const size = Math.random() * 190 + 225; 
+            // Randomize size (reduced by another 15%: ~160px to 295px)
+            const size = Math.random() * 135 + 160; 
             img.style.width = `${size}px`;
             
             // Spawn from -20vw to 110vw evenly, with slight jitter to look natural
@@ -115,9 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const jitter = (Math.random() - 0.5) * 5;
             img.style.left = `${baseLeft + jitter}vw`;
             
-            const duration = Math.random() * 1.2 + 1.5; // 1.5s to 2.7s
-            // Spread delays out over 1.2 seconds so they fall continuously in waves
-            const delay = Math.random() * 1.2; 
+            // Slower fall speed so they stay on screen longer (2.0s to 3.5s)
+            const duration = Math.random() * 1.5 + 2.0; 
+            
+            // Spread the spawn delay across 2.0 seconds so the rain lasts much longer
+            const delay = Math.random() * 2.0; 
             img.style.animationDuration = `${duration}s`;
             img.style.animationDelay = `${delay}s`;
             
@@ -128,15 +130,15 @@ document.addEventListener('DOMContentLoaded', () => {
             rainContainer.appendChild(img);
         }
 
-        // Switch state halfway through the animation (when screen is covered, ~1100ms)
+        // Switch state halfway through the animation (when screen is completely full, ~1800ms)
         setTimeout(() => {
             switchState(targetKey);
-        }, 1100);
+        }, 1800);
 
-        // Clean up rain container after max duration
+        // Clean up rain container after max duration (2.0s delay + 3.5s duration = 5.5s max)
         setTimeout(() => {
             rainContainer.remove();
-        }, 4500);
+        }, 6000);
     }
 
     /* ===== EVENT DELEGATION ===== */

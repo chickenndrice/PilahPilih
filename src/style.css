@@ -802,14 +802,14 @@ body::before{
 
 .rain-item {
   position: absolute;
-  top: -600px;
-  animation: rainFall linear forwards;
+  top: -800px;
+  animation: rainFall linear both;
   filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25));
 }
 
 @keyframes rainFall {
   0% {
-    top: -600px;
+    top: -800px;
     transform: rotate(0deg);
   }
   100% {
