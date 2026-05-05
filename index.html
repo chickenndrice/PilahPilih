@@ -81,19 +81,16 @@
                     <div class="bin-color-dot dot-green"></div>
                     <svg><use href="#icon-bin-green"/></svg>
                     <div class="label">ORGANIK</div>
-                    <div class="bin-sub">🍌 Sisa Makanan</div>
                 </div>
                 <div class="bin yellow">
                     <div class="bin-color-dot dot-yellow"></div>
                     <svg><use href="#icon-bin-yellow"/></svg>
                     <div class="label">PLASTIK</div>
-                    <div class="bin-sub">🍶 Botol Plastik</div>
                 </div>
                 <div class="bin blue">
                     <div class="bin-color-dot dot-blue"></div>
                     <svg><use href="#icon-bin-blue"/></svg>
                     <div class="label">KERTAS</div>
-                    <div class="bin-sub">📄 Kertas Bekas</div>
                 </div>
             </div>
 
@@ -122,8 +119,8 @@
                 <div class="scan-line"></div>
                 <div class="scan-prompt">
                     <img src="/assets/images/Robi/Robi_Scanning.png" class="scan-img" alt="Robi Scanning">
-                    <div class="scan-text">Tunjukkan bendamu ke kamera ya!</div>
-                    <div class="scan-hint">Klik tong sampah untuk simulasi deteksi</div>
+                    <div class="scan-text">Tunjukkan sampah ke kamera ya!</div>
+                    <div class="scan-hint">Pastikan sampah terlihat dengan jelas</div>
                 </div>
                 <div class="conf-pill">Menganalisis<span class="conf-pill__dots">...</span></div>
             </div>
@@ -145,7 +142,14 @@
 
             <div class="controls">
                 <button class="btn stop btn-stop" id="btn-scan-stop">⏸ BERHENTI</button>
-                <button class="btn ghost" id="btn-scan-volume">🔊 Volume</button>
+                <div class="vol-wrapper" style="position: relative; display: inline-block;">
+                    <button class="btn ghost btn-volume" id="btn-scan-volume">🔊 Volume</button>
+                    <div class="vol-popup" id="vol-popup">
+                        <span class="vol-icon" id="vol-icon">🔊</span>
+                        <input type="range" class="vol-slider" id="vol-slider" min="0" max="100" value="50">
+                        <span class="vol-text" id="vol-text">50</span>
+                    </div>
+                </div>
             </div>
         </div>
 

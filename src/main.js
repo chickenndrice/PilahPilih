@@ -47,6 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /* ===== VOLUME CONTROL ===== */
+    const volSlider = document.getElementById('vol-slider');
+    const volText = document.getElementById('vol-text');
+    const volIcon = document.getElementById('vol-icon');
+    
+    if (volSlider && volText && volIcon) {
+        volSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            volText.textContent = val;
+            
+            // Update icon based on volume level
+            if (val == 0) volIcon.textContent = '🔇';
+            else if (val < 50) volIcon.textContent = '🔉';
+            else volIcon.textContent = '🔊';
+            
+            // Update gradient fill
+            volSlider.style.background = `linear-gradient(to right, var(--blue) ${val}%, #E0E0E0 ${val}%)`;
+            
+            // In final version, this would adjust actual app volume:
+            // if (videoEl) videoEl.volume = val / 100;
+        });
+        
+        // Initialize gradient on load
+        volSlider.style.background = `linear-gradient(to right, var(--blue) ${volSlider.value}%, #E0E0E0 ${volSlider.value}%)`;
+    }
+
     /* ===== STATE MACHINE ===== */
     function switchState(targetKey) {
         const target = STATES[targetKey];
@@ -88,6 +114,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.matches('.btn-guide')) {
             alert('Fitur Panduan akan ditampilkan dalam bentuk modal atau overlay di versi final.');
             return;
+        }
+
+        // Volume button toggle
+        if (target.matches('.btn-volume')) {
+            const popup = document.getElementById('vol-popup');
+            if (popup) popup.classList.toggle('show');
+            return;
+        }
+
+        // Close volume popup if clicking outside
+        const popup = document.getElementById('vol-popup');
+        if (popup && popup.classList.contains('show') && !target.closest('.vol-wrapper')) {
+            popup.classList.remove('show');
         }
 
         // Simulation: bin clicks during scanning state
