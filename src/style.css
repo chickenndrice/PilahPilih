@@ -788,6 +788,36 @@ body::before{
   transition: transform 0.1s;
 }
 
+/* ===== RAIN TRANSITION WIDGET ===== */
+.rain-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.rain-item {
+  position: absolute;
+  top: -600px;
+  animation: rainFall linear forwards;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25));
+}
+
+@keyframes rainFall {
+  0% {
+    top: -600px;
+    transform: rotate(0deg);
+  }
+  100% {
+    top: 120vh;
+    transform: rotate(var(--rot-end, 360deg));
+  }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px){
   .page      { height: 100% }

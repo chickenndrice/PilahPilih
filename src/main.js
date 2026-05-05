@@ -89,6 +89,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /* ===== RAIN TRANSITION ===== */
+    function triggerRainTransition(targetKey, imageSrcs) {
+        // Ensure imageSrcs is an array
+        const images = Array.isArray(imageSrcs) ? imageSrcs : [imageSrcs];
+        
+        // Create rain container
+        const rainContainer = document.createElement('div');
+        rainContainer.className = 'rain-container';
+        document.body.appendChild(rainContainer);
+
+        const particleCount = 60;
+        for (let i = 0; i < particleCount; i++) {
+            const img = document.createElement('img');
+            // Distribute evenly among all provided image variants
+            img.src = images[i % images.length];
+            img.className = 'rain-item';
+            
+            // Randomize size (reverted back to 5x larger: 300px to 550px)
+            const size = Math.random() * 250 + 300; 
+            img.style.width = `${size}px`;
+            
+            // Spawn from -20vw to 110vw to cover empty gaps on the far left/right edges
+            img.style.left = `${Math.random() * 130 - 20}vw`;
+            
+            const duration = Math.random() * 1 + 1.5; // 1.5s to 2.5s
+            const delay = Math.random() * 0.5; // 0s to 0.5s
+            img.style.animationDuration = `${duration}s`;
+            img.style.animationDelay = `${delay}s`;
+            
+            // Random rotation end
+            const rotEnd = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 360 + 180);
+            img.style.setProperty('--rot-end', `${rotEnd}deg`);
+
+            rainContainer.appendChild(img);
+        }
+
+        // Switch state halfway through the animation (when screen is covered)
+        setTimeout(() => {
+            switchState(targetKey);
+        }, 800);
+
+        // Clean up rain container after max duration
+        setTimeout(() => {
+            rainContainer.remove();
+        }, 3500);
+    }
+
     /* ===== EVENT DELEGATION ===== */
     // Instead of attaching individual listeners to every button,
     // we use a single delegated listener on the app container.
@@ -133,15 +180,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const scanningActive = STATES.scanning.classList.contains('active');
         if (scanningActive) {
             if (target.closest('.sim-organic')) {
-                switchState('organic');
+                triggerRainTransition('organic', '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png');
                 return;
             }
             if (target.closest('.sim-plastic')) {
-                switchState('plastic');
+                triggerRainTransition('plastic', [
+                    '/assets/images/Sampah/Botol/Sampah Botol.png',
+                    '/assets/images/Sampah/Botol/Sampah Botol 2.png',
+                    '/assets/images/Sampah/Botol/Sampah Botol 3.png',
+                    '/assets/images/Sampah/Botol/Sampah Botol 4.png',
+                    '/assets/images/Sampah/Botol/Sampah Botol 5.png',
+                    '/assets/images/Sampah/Botol/Sampah Botol 6.png'
+                ]);
                 return;
             }
             if (target.closest('.sim-paper')) {
-                switchState('paper');
+                triggerRainTransition('paper', '/assets/images/Sampah/Kertas/Sampah Kertas.png');
                 return;
             }
         }
