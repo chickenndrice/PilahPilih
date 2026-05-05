@@ -99,22 +99,25 @@ document.addEventListener('DOMContentLoaded', () => {
         rainContainer.className = 'rain-container';
         document.body.appendChild(rainContainer);
 
-        const particleCount = 60;
+        const particleCount = 100;
         for (let i = 0; i < particleCount; i++) {
             const img = document.createElement('img');
             // Distribute evenly among all provided image variants
             img.src = images[i % images.length];
             img.className = 'rain-item';
             
-            // Randomize size (reverted back to 5x larger: 300px to 550px)
-            const size = Math.random() * 250 + 300; 
+            // Randomize size (reduced by 25%: ~225px to 415px)
+            const size = Math.random() * 190 + 225; 
             img.style.width = `${size}px`;
             
-            // Spawn from -20vw to 110vw to cover empty gaps on the far left/right edges
-            img.style.left = `${Math.random() * 130 - 20}vw`;
+            // Spawn from -20vw to 110vw evenly, with slight jitter to look natural
+            const baseLeft = (i / particleCount) * 130 - 20;
+            const jitter = (Math.random() - 0.5) * 5;
+            img.style.left = `${baseLeft + jitter}vw`;
             
-            const duration = Math.random() * 1 + 1.5; // 1.5s to 2.5s
-            const delay = Math.random() * 0.5; // 0s to 0.5s
+            const duration = Math.random() * 1.2 + 1.5; // 1.5s to 2.7s
+            // Spread delays out over 1.2 seconds so they fall continuously in waves
+            const delay = Math.random() * 1.2; 
             img.style.animationDuration = `${duration}s`;
             img.style.animationDelay = `${delay}s`;
             
@@ -125,15 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
             rainContainer.appendChild(img);
         }
 
-        // Switch state halfway through the animation (when screen is covered)
+        // Switch state halfway through the animation (when screen is covered, ~1100ms)
         setTimeout(() => {
             switchState(targetKey);
-        }, 800);
+        }, 1100);
 
         // Clean up rain container after max duration
         setTimeout(() => {
             rainContainer.remove();
-        }, 3500);
+        }, 4500);
     }
 
     /* ===== EVENT DELEGATION ===== */
