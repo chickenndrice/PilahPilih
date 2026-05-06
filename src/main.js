@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ===== RAIN TRANSITION ===== */
-    function triggerRainTransition(targetKey, imageSrcs) {
+    function triggerRainTransition(targetKey, imageSrcs, sizeMultiplier = 1.0) {
         // Ensure imageSrcs is an array
         const images = Array.isArray(imageSrcs) ? imageSrcs : [imageSrcs];
         
@@ -106,8 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = images[i % images.length];
             img.className = 'rain-item';
             
-            // Randomize size (reduced by another 15%: ~160px to 295px)
-            const size = Math.random() * 135 + 160; 
+            // Randomize size, then apply per-category multiplier
+            const baseSize = Math.random() * 135 + 160;
+            const size = baseSize * sizeMultiplier;
             img.style.width = `${size}px`;
             
             // Spawn from -20vw to 110vw evenly, with slight jitter to look natural
@@ -185,7 +186,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const scanningActive = STATES.scanning.classList.contains('active');
         if (scanningActive) {
             if (target.closest('.sim-organic')) {
-                triggerRainTransition('organic', '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png');
+                triggerRainTransition('organic', [
+                    '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
+                    '/assets/images/Sampah/Organik/Daun 1.png',
+                    '/assets/images/Sampah/Organik/Daun 2.png',
+                    '/assets/images/Sampah/Organik/Daun 3.png',
+                    '/assets/images/Sampah/Organik/Daun 4.png',
+                    '/assets/images/Sampah/Organik/Daun 5.png'
+                ]);
                 return;
             }
             if (target.closest('.sim-plastic')) {
@@ -200,7 +208,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (target.closest('.sim-paper')) {
-                triggerRainTransition('paper', '/assets/images/Sampah/Kertas/Sampah Kertas.png');
+                triggerRainTransition('paper', [
+                    '/assets/images/Sampah/Kertas/Sampah Kertas.png',
+                    '/assets/images/Sampah/Kertas/Sampah Kertas 2.png',
+                    '/assets/images/Sampah/Kertas/Sampah Kertas 3.png',
+                    '/assets/images/Sampah/Kertas/Sampah Kertas 4.png',
+                    '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
+                ], 1.2);
                 return;
             }
         }
