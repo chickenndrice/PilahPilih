@@ -15,6 +15,82 @@ document.addEventListener('DOMContentLoaded', () => {
         uncertain: document.getElementById('state-uncertain'),
     };
 
+    /* ===== AI MODEL INTEGRATION ===== */
+    const MODEL_URL = "/model/";
+    let aiModel, maxPredictions;
+    let isPredicting = false;
+    let isTransitioning = false;
+
+    async function initModel() {
+        const modelURL = MODEL_URL + "model.json";
+        const metadataURL = MODEL_URL + "metadata.json";
+
+        try {
+            // Load the image model from global tmImage (added via script tag in index.html)
+            aiModel = await window.tmImage.load(modelURL, metadataURL);
+            maxPredictions = aiModel.getTotalClasses();
+            console.log("AI Model loaded successfully");
+        } catch (e) {
+            console.error("Error loading AI model:", e);
+        }
+    }
+
+    initModel();
+
+    async function predictLoop() {
+        if (!STATES.scanning.classList.contains('active') || !isPredicting) return;
+        
+        if (videoEl.readyState >= 2 && !isTransitioning) {
+            await predict();
+        }
+        window.requestAnimationFrame(predictLoop);
+    }
+
+    async function predict() {
+        if (!aiModel || isTransitioning) return;
+        
+        const prediction = await aiModel.predict(videoEl);
+        
+        for (let i = 0; i < maxPredictions; i++) {
+            const className = prediction[i].className;
+            const probability = prediction[i].probability;
+            
+            // Trigger transition if confidence is very high
+            if (probability > 0.95) {
+                isTransitioning = true;
+                
+                if (className === "Plastik") {
+                    triggerRainTransition('plastic', [
+                        '/assets/images/Sampah/Botol/Sampah Botol.png',
+                        '/assets/images/Sampah/Botol/Sampah Botol 2.png',
+                        '/assets/images/Sampah/Botol/Sampah Botol 3.png',
+                        '/assets/images/Sampah/Botol/Sampah Botol 4.png',
+                        '/assets/images/Sampah/Botol/Sampah Botol 5.png',
+                        '/assets/images/Sampah/Botol/Sampah Botol 6.png'
+                    ]);
+                } else if (className === "Kertas") {
+                    triggerRainTransition('paper', [
+                        '/assets/images/Sampah/Kertas/Sampah Kertas.png',
+                        '/assets/images/Sampah/Kertas/Sampah Kertas 2.png',
+                        '/assets/images/Sampah/Kertas/Sampah Kertas 3.png',
+                        '/assets/images/Sampah/Kertas/Sampah Kertas 4.png',
+                        '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
+                    ], 1.2);
+                } else if (className === "Sisa makanan") {
+                    triggerRainTransition('organic', [
+                        '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
+                        '/assets/images/Sampah/Organik/Daun 1.png',
+                        '/assets/images/Sampah/Organik/Daun 2.png',
+                        '/assets/images/Sampah/Organik/Daun 3.png',
+                        '/assets/images/Sampah/Organik/Daun 4.png',
+                        '/assets/images/Sampah/Organik/Daun 5.png'
+                    ]);
+                }
+                break;
+            }
+        }
+    }
+
     /* ===== CAMERA MANAGEMENT ===== */
     const videoEl = document.getElementById('webcamVideo');
     let stream = null;
@@ -31,7 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
             });
             videoEl.srcObject = stream;
-            videoEl.onplaying = () => videoEl.classList.add('live');
+            videoEl.onplaying = () => {
+                videoEl.classList.add('live');
+                isPredicting = true;
+                window.requestAnimationFrame(predictLoop);
+            };
         } catch (err) {
             console.error('Camera access denied or error:', err);
         }
@@ -39,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function stopCamera() {
         if (!stream) return;
+        isPredicting = false;
         stream.getTracks().forEach(track => track.stop());
         stream = null;
         if (videoEl) {
@@ -83,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Camera only runs in scanning state
         if (targetKey === 'scanning') {
+            isTransitioning = false;
             startCamera();
         } else {
             stopCamera();
