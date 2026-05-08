@@ -833,6 +833,27 @@ body::before{
   }
 }
 
+/* ===== COUNTDOWN OVERLAY ===== */
+.countdown-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none; /* controlled by JS */
+  justify-content: center;
+  align-items: center;
+  background: rgba(31, 27, 46, 0.6);
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  border-radius: inherit;
+}
+
+#countdown-number {
+  font-size: 10rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: var(--shadow-lg);
+  animation: popIn 0.3s ease-out both;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px){
   .page      { height: 100% }

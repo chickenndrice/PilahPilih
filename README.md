@@ -10,12 +10,13 @@ Aplikasi ini mendukung **Sustainable Development Goals (SDGs)**:
 
 ## ✨ Fitur Utama
 
+- **Integrasi AI Real-time**: Menggunakan model *Teachable Machine* (*TensorFlow.js*) untuk memindai dan mendeteksi sampah (Plastik, Kertas, Organik) secara langsung melalui kamera *webcam*.
 - **Antarmuka Ramah Anak**: Menggunakan desain *Soft Neo-brutalism* dengan warna-warna cerah, bentuk membulat, dan elemen antarmuka berukuran besar yang sangat mudah dibaca dan ditekan oleh anak-anak.
 - **Kamera Layar Penuh (*Fullscreen*)**: Memanfaatkan integrasi Webcam secara *real-time* yang memenuhi layar untuk memberikan pengalaman pemindaian barang yang imersif.
-- **Animasi Ceria**: Animasi *pop-in*, bintang yang bergoyang (*wiggle*), dan transisi *fade-out* kamera yang mulus membuat pengalaman belajar tidak membosankan.
-- **Simulasi State Management**: Telah mengimplementasikan 6 *state* layar secara mandiri dalam satu halaman (*Single Page Application*):
+- **Animasi Ceria**: Animasi *pop-in*, bintang yang bergoyang (*wiggle*), dan transisi dinamis membuat pengalaman belajar tidak membosankan.
+- **State Management Mulus**: Telah mengimplementasikan 6 *state* layar secara terpadu dalam satu halaman (*Single Page Application*):
   1. Layar Sambutan (Welcome)
-  2. Kamera Pemindaian (Scanning)
+  2. Kamera Pemindaian (Scanning) dengan Hitung Mundur
   3. Hasil: Tong Kuning (Plastik)
   4. Hasil: Tong Biru (Kertas)
   5. Hasil: Tong Hijau (Organik)
@@ -23,10 +24,11 @@ Aplikasi ini mendukung **Sustainable Development Goals (SDGs)**:
 
 ## 🛠️ Tech Stack
 
-Proyek ini dibangun menggunakan teknologi web standar yang dioptimalkan untuk integrasi Machine Learning (TensorFlow.js) di masa mendatang:
+Proyek ini dibangun menggunakan teknologi web standar yang dioptimalkan untuk performa tinggi:
 - **HTML5**: Struktur semantik aplikasi.
 - **CSS3 (Vanilla)**: *Styling* khusus dengan variabel dinamis, animasi *keyframes*, dan *Flexbox/Grid layout*.
-- **JavaScript (Vanilla)**: Logika *state management*, manipulasi DOM, dan penanganan akses `getUserMedia` API untuk kamera.
+- **JavaScript (Vanilla)**: Logika *state management*, manipulasi DOM, pengolahan AI, dan penanganan akses `getUserMedia` API untuk kamera.
+- **TensorFlow.js & Teachable Machine**: Digunakan untuk inferensi model pendeteksi objek cerdas langsung di sisi klien (*Client-side*).
 - **Vite**: *Build tool* lokal yang sangat cepat untuk pengalaman pengembangan yang optimal.
 
 ## 🚀 Cara Menjalankan Secara Lokal
@@ -46,13 +48,14 @@ Proyek ini dibangun menggunakan teknologi web standar yang dioptimalkan untuk in
 ## 🎨 UI/UX Highlights
 
 - **Efisiensi Kamera**: Aliran video dari Webcam secara cerdas dimatikan (kamera ditutup) saat pengguna berada di layar sambutan atau saat aplikasi berhenti, menghemat baterai dan menjaga privasi.
-- **Hover Interaktif**: Tong sampah memberikan respons instan saat disorot kursor, mengganti labelnya (misal: `PLASTIK` menjadi `TONG KUNING!`) untuk memudahkan anak-anak mengasosiasikan warna dengan jenis sampah.
-- **Responsif (*Scaling*)**: Menggunakan pendekatan *Viewport Width/Height* dipadu dengan properti CSS Modern yang menyesuaikan dengan mulus di layar monitor laptop tanpa membuat konten terlihat terlalu kecil.
+- **Transisi Hujan Sampah**: Transisi spektakuler saat hasil deteksi AI muncul! Menggunakan sistem partikel CSS untuk menghasilkan puluhan objek sampah berjatuhan secara acak dari atas layar (menggunakan variasi gambar botol, kertas, daun, kulit pisang) secara organik.
+- **Jeda & Hitung Mundur Visual**: AI tidak mendadak memindai! Terdapat fase layar meredup elegan dilengkapi tulisan "SIAP?" dan hitungan "3, 2, 1" agar anak-anak memiliki waktu menempatkan sampah di depan kamera.
+- **Skor Keyakinan Dinamis**: Angka persentase keyakinan di layar hasil (misal: `Yakin 96%`) bukanlah teks palsu, melainkan angka probabilitas presisi hasil kalkulasi model *Machine Learning* yang sesungguhnya.
 
 ## 🔮 Rencana Pengembangan Selanjutnya
 
-- **Integrasi Model AI**: Menghubungkan *event trigger* manual saat ini dengan model Computer Vision menggunakan *Teachable Machine* atau *TensorFlow.js* untuk melakukan inferensi secara langsung di sisi klien (*Client-side*).
-- **Efek Suara (Audio)**: Menambahkan *Voice-over* (VO) maskot Robi untuk membacakan teks dan memberikan *feedback* suara yang riang.
+- **Efek Suara dan Audio**: Menghubungkan *slider volume* di UI dengan Audio Engine. Menambahkan *Voice-over* (VO) maskot Robi untuk membacakan teks, memberi hitung mundur, dan memberikan *feedback* suara riang saat sampah terdeteksi.
+
 ---
 
 *Dibuat untuk menginspirasi generasi hijau masa depan.* 🌍🌱

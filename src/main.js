@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let aiModel, maxPredictions;
     let isPredicting = false;
     let isTransitioning = false;
+    let predictionTimeout = null;
 
     async function initModel() {
         const modelURL = MODEL_URL + "model.json";
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Trigger transition if confidence is very high
             if (probability > 0.95) {
                 isTransitioning = true;
+                clearTimeout(predictionTimeout);
                 
                 if (className === "Plastik") {
                     triggerRainTransition('plastic', [
@@ -67,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         '/assets/images/Sampah/Botol/Sampah Botol 4.png',
                         '/assets/images/Sampah/Botol/Sampah Botol 5.png',
                         '/assets/images/Sampah/Botol/Sampah Botol 6.png'
-                    ]);
+                    ], 1.0, probability);
                 } else if (className === "Kertas") {
                     triggerRainTransition('paper', [
                         '/assets/images/Sampah/Kertas/Sampah Kertas.png',
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         '/assets/images/Sampah/Kertas/Sampah Kertas 3.png',
                         '/assets/images/Sampah/Kertas/Sampah Kertas 4.png',
                         '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
-                    ], 1.2);
+                    ], 1.2, probability);
                 } else if (className === "Sisa makanan") {
                     triggerRainTransition('organic', [
                         '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         '/assets/images/Sampah/Organik/Daun 3.png',
                         '/assets/images/Sampah/Organik/Daun 4.png',
                         '/assets/images/Sampah/Organik/Daun 5.png'
-                    ]);
+                    ], 1.0, probability);
                 }
                 break;
             }
@@ -93,7 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ===== CAMERA MANAGEMENT ===== */
     const videoEl = document.getElementById('webcamVideo');
+    const countdownOverlay = document.getElementById('countdown-overlay');
+    const countdownNumber = document.getElementById('countdown-number');
     let stream = null;
+    let countdownInterval = null;
 
     async function startCamera() {
         if (stream || !videoEl) return;
@@ -109,17 +114,60 @@ document.addEventListener('DOMContentLoaded', () => {
             videoEl.srcObject = stream;
             videoEl.onplaying = () => {
                 videoEl.classList.add('live');
-                isPredicting = true;
-                window.requestAnimationFrame(predictLoop);
+                startCountdown();
             };
         } catch (err) {
             console.error('Camera access denied or error:', err);
         }
     }
 
+    function startCountdown() {
+        isPredicting = false;
+        clearInterval(countdownInterval);
+        
+        let count = 4; // 1s SIAP, 3, 2, 1
+        if(countdownOverlay) countdownOverlay.style.display = 'flex';
+        if(countdownNumber) {
+            countdownNumber.textContent = "SIAP?";
+            // Trigger CSS animation restart
+            countdownNumber.style.animation = 'none';
+            countdownNumber.offsetHeight; /* trigger reflow */
+            countdownNumber.style.animation = null; 
+        }
+
+        countdownInterval = setInterval(() => {
+            count--;
+            if (count > 0) {
+                if(countdownNumber) {
+                    countdownNumber.textContent = count;
+                    countdownNumber.style.animation = 'none';
+                    countdownNumber.offsetHeight;
+                    countdownNumber.style.animation = null;
+                }
+            } else {
+                clearInterval(countdownInterval);
+                if(countdownOverlay) countdownOverlay.style.display = 'none';
+                isPredicting = true;
+                
+                // Set a timeout: if no confident prediction is found in 6 seconds, go to uncertain state
+                predictionTimeout = setTimeout(() => {
+                    if (isPredicting && !isTransitioning) {
+                        isTransitioning = true;
+                        switchState('uncertain');
+                    }
+                }, 6000);
+
+                window.requestAnimationFrame(predictLoop);
+            }
+        }, 1000);
+    }
+
     function stopCamera() {
         if (!stream) return;
         isPredicting = false;
+        clearInterval(countdownInterval);
+        clearTimeout(predictionTimeout);
+        if(countdownOverlay) countdownOverlay.style.display = 'none';
         stream.getTracks().forEach(track => track.stop());
         stream = null;
         if (videoEl) {
@@ -172,7 +220,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ===== RAIN TRANSITION ===== */
-    function triggerRainTransition(targetKey, imageSrcs, sizeMultiplier = 1.0) {
+    function triggerRainTransition(targetKey, imageSrcs, sizeMultiplier = 1.0, confidenceScore = 0) {
+        // Update the confidence text if a score is provided
+        if (confidenceScore > 0) {
+            const stateEl = STATES[targetKey];
+            if (stateEl) {
+                const pctEl = stateEl.querySelector('.pct');
+                if (pctEl) {
+                    pctEl.textContent = `${Math.round(confidenceScore * 100)}%`;
+                }
+            }
+        }
+
         // Ensure imageSrcs is an array
         const images = Array.isArray(imageSrcs) ? imageSrcs : [imageSrcs];
         
@@ -264,45 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
             popup.classList.remove('show');
         }
 
-        // Simulation: bin clicks during scanning state
-        const scanningActive = STATES.scanning.classList.contains('active');
-        if (scanningActive) {
-            if (target.closest('.sim-organic')) {
-                triggerRainTransition('organic', [
-                    '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
-                    '/assets/images/Sampah/Organik/Daun 1.png',
-                    '/assets/images/Sampah/Organik/Daun 2.png',
-                    '/assets/images/Sampah/Organik/Daun 3.png',
-                    '/assets/images/Sampah/Organik/Daun 4.png',
-                    '/assets/images/Sampah/Organik/Daun 5.png'
-                ]);
-                return;
-            }
-            if (target.closest('.sim-plastic')) {
-                triggerRainTransition('plastic', [
-                    '/assets/images/Sampah/Botol/Sampah Botol.png',
-                    '/assets/images/Sampah/Botol/Sampah Botol 2.png',
-                    '/assets/images/Sampah/Botol/Sampah Botol 3.png',
-                    '/assets/images/Sampah/Botol/Sampah Botol 4.png',
-                    '/assets/images/Sampah/Botol/Sampah Botol 5.png',
-                    '/assets/images/Sampah/Botol/Sampah Botol 6.png'
-                ]);
-                return;
-            }
-            if (target.closest('.sim-paper')) {
-                triggerRainTransition('paper', [
-                    '/assets/images/Sampah/Kertas/Sampah Kertas.png',
-                    '/assets/images/Sampah/Kertas/Sampah Kertas 2.png',
-                    '/assets/images/Sampah/Kertas/Sampah Kertas 3.png',
-                    '/assets/images/Sampah/Kertas/Sampah Kertas 4.png',
-                    '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
-                ], 1.2);
-                return;
-            }
-        }
-
-        // Simulation: clicking the scan viewport → uncertain
-        if (target.closest('#vp-scan') && scanningActive && !target.closest('.bin')) {
+        // Simulation: clicking the scan viewport → uncertain (manual override)
+        if (target.closest('#vp-scan') && STATES.scanning.classList.contains('active') && !target.closest('.bin')) {
             switchState('uncertain');
         }
     });
