@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /* ===== AI MODEL INTEGRATION ===== */
-    const MODEL_URL = "/model/";
+    const MODEL_URL = "/model/controllable/";
     let aiModel, maxPredictions;
     let isPredicting = false;
     let isTransitioning = false;
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         '/assets/images/Sampah/Kertas/Sampah Kertas 4.png',
                         '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
                     ], 1.2, probability);
-                } else if (className === "Sisa makanan") {
+                } else if (className === "Sisa Makanan") {
                     triggerRainTransition('organic', [
                         '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
                         '/assets/images/Sampah/Organik/Daun 1.png',
