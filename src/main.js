@@ -15,6 +15,30 @@ document.addEventListener('DOMContentLoaded', () => {
         uncertain: document.getElementById('state-uncertain'),
     };
 
+    /* ===== AUDIO ASSETS ===== */
+    const audioSfxComplete = new Audio('/assets/audio/sound-fx-complete-v1.mp3');
+    const audioPembuka = new Audio('/assets/audio/1-pembuka.mp3');
+    const audioPlastik = [
+        new Audio('/assets/audio/2-plastik-v1.mp3'),
+        new Audio('/assets/audio/3-plastik-v2.mp3')
+    ];
+    const audioKertas = [
+        new Audio('/assets/audio/4-kertas-v1.mp3'),
+        new Audio('/assets/audio/5-kertas-v2.mp3')
+    ];
+    const audioOrganik = [
+        new Audio('/assets/audio/6-organik-v1.mp3'),
+        new Audio('/assets/audio/7-organik-v2.mp3')
+    ];
+    const audioRagu = [
+        new Audio('/assets/audio/8-ragu-v1.mp3'),
+        new Audio('/assets/audio/9-ragu-v2.mp3'),
+        new Audio('/assets/audio/10-ragu-v3.mp3')
+    ];
+    
+    // State flag to track opening audio
+    let hasPlayedOpeningAudio = false;
+
     /* ===== AI MODEL INTEGRATION ===== */
     const MODEL_URL = "/model/controllable/";
     let aiModel, maxPredictions;
@@ -62,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearTimeout(predictionTimeout);
                 
                 if (className === "Plastik") {
+                    playTransitionAudio(audioPlastik);
+
                     triggerRainTransition('plastic', [
                         '/assets/images/Sampah/Botol/Sampah Botol.png',
                         '/assets/images/Sampah/Botol/Sampah Botol 2.png',
@@ -71,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         '/assets/images/Sampah/Botol/Sampah Botol 6.png'
                     ], 1.0, probability);
                 } else if (className === "Kertas") {
+                    playTransitionAudio(audioKertas);
+
                     triggerRainTransition('paper', [
                         '/assets/images/Sampah/Kertas/Sampah Kertas.png',
                         '/assets/images/Sampah/Kertas/Sampah Kertas 2.png',
@@ -79,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
                     ], 1.2, probability);
                 } else if (className === "Sisa Makanan") {
+                    playTransitionAudio(audioOrganik);
+
                     triggerRainTransition('organic', [
                         '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
                         '/assets/images/Sampah/Organik/Daun 1.png',
@@ -153,6 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 predictionTimeout = setTimeout(() => {
                     if (isPredicting && !isTransitioning) {
                         isTransitioning = true;
+                        
+                        playTransitionAudio(audioRagu);
+                        
                         switchState('uncertain');
                     }
                 }, 6000);
@@ -282,6 +315,47 @@ document.addEventListener('DOMContentLoaded', () => {
             rainContainer.remove();
         }, 6000);
     }
+    
+    /* ===== AUDIO LOCK HELPER ===== */
+    function playTransitionAudio(audioArray) {
+        const randAudio = audioArray[Math.floor(Math.random() * audioArray.length)];
+        randAudio.currentTime = 0;
+        audioSfxComplete.currentTime = 0;
+        
+        lockActionButtons(true);
+        
+        audioSfxComplete.play().then(() => {
+            audioSfxComplete.onended = () => {
+                // Play Robi voice after SFX finishes
+                randAudio.play().then(() => {
+                    randAudio.onended = () => {
+                        lockActionButtons(false);
+                    };
+                }).catch(e => {
+                    console.warn("Robi Audio play failed:", e);
+                    lockActionButtons(false);
+                });
+            };
+        }).catch(e => {
+            console.warn("SFX play failed, falling back to Robi audio:", e);
+            randAudio.play().then(() => {
+                randAudio.onended = () => {
+                    lockActionButtons(false);
+                };
+            }).catch(err => {
+                lockActionButtons(false);
+            });
+        });
+    }
+
+    function lockActionButtons(lock) {
+        // Find all buttons that would start/continue the game (except the welcome one)
+        const actionBtns = document.querySelectorAll('.btn-start-game:not(#btn-welcome-start)');
+        actionBtns.forEach(btn => {
+            btn.disabled = lock;
+            // Optionally, we could change text, but the CSS :disabled state handles opacity/cursor
+        });
+    }
 
     /* ===== EVENT DELEGATION ===== */
     // Instead of attaching individual listeners to every button,
@@ -294,6 +368,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Navigation: start / continue / retry → scanning
         if (target.matches('.btn-start-game')) {
+            if (target.id === 'btn-welcome-start') {
+                if (!hasPlayedOpeningAudio) {
+                    target.disabled = true;
+                    const originalText = target.textContent;
+                    target.textContent = "🔊 Mendengarkan...";
+                    
+                    audioPembuka.play().then(() => {
+                        hasPlayedOpeningAudio = true;
+                        audioPembuka.onended = () => {
+                            target.disabled = false;
+                            target.textContent = originalText;
+                            switchState('scanning');
+                        };
+                    }).catch(err => {
+                        // Fallback if browser blocks autoplay/audio
+                        console.warn("Audio play failed:", err);
+                        hasPlayedOpeningAudio = true; // prevent infinite loops of blocking
+                        target.disabled = false;
+                        target.textContent = originalText;
+                        switchState('scanning');
+                    });
+                } else {
+                    // Audio already played once, just start immediately
+                    switchState('scanning');
+                }
+                return;
+            }
+            
             switchState('scanning');
             return;
         }

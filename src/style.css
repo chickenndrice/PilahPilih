@@ -920,6 +920,13 @@ body::before {
   box-shadow: 5px 6px 0 var(--ink);
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
 .btn:active {
   transform: translateY(3px);
   box-shadow: 1px 1px 0 var(--ink);
