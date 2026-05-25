@@ -320,8 +320,8 @@ body::before {
   object-fit: cover;
   z-index: 1;
   transform: scaleX(-1);
-  opacity: 0.15;
-  transition: opacity 2s ease-in-out;
+  opacity: 0; /* Changed from 0.15 to 0 so it stays fully clean before frames start */
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 #webcamVideo.live {
