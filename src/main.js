@@ -80,19 +80,18 @@ class AudioManager {
         this.playingTracks.add(track);
         track.currentTime = 0;
         
-        return track.play()
-            .then(() => {
-                return new Promise((resolve) => {
-                    track.onended = () => {
-                        this.playingTracks.delete(track);
-                        resolve();
-                    };
-                });
-            })
-            .catch(err => {
+        return new Promise((resolve) => {
+            track.onended = () => {
+                this.playingTracks.delete(track);
+                resolve();
+            };
+            
+            track.play().catch(err => {
                 console.warn(`Audio playback failed or was interrupted for: ${track.src}`, err);
                 this.playingTracks.delete(track);
+                resolve();
             });
+        });
     }
 
     /**
@@ -522,8 +521,10 @@ class AppController {
         clearInterval(this.countdownInterval);
         this.model.stopPrediction();
         
-        // Always cease background audio leaks during any state switches
-        this.audio.stopAll();
+        // Cease background audio when returning to welcome or starting a new scan session
+        if (targetKey === 'welcome' || targetKey === 'scanning') {
+            this.audio.stopAll();
+        }
 
         if (targetKey === 'scanning') {
             this.camera.start(() => {
