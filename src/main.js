@@ -37,6 +37,7 @@ class AudioManager {
 
         this.playingTracks = new Set();
         this.hasPlayedOpening = false;
+        this.lastPlayedMap = new Map();
     }
 
     loadAudio(src) {
@@ -95,16 +96,34 @@ class AudioManager {
     }
 
     /**
+     * Helper to select a random track from an array without repeating the same track twice in a row.
+     */
+    getRandomTrack(audioArray, categoryKey) {
+        if (!audioArray || audioArray.length === 0) return null;
+        if (audioArray.length === 1) return audioArray[0];
+
+        const lastIndex = this.lastPlayedMap.get(categoryKey);
+        let newIndex;
+
+        do {
+            newIndex = Math.floor(Math.random() * audioArray.length);
+        } while (newIndex === lastIndex);
+
+        this.lastPlayedMap.set(categoryKey, newIndex);
+        return audioArray[newIndex];
+    }
+
+    /**
      * Sequential player: triggers Success SFX first, followed by a randomized Robi VO variation.
      */
-    playTransitionSequence(voTracksArray, onStart, onComplete) {
+    playTransitionSequence(voTracksArray, categoryKey, onStart, onComplete) {
         this.stopAll();
         
         if (onStart) onStart();
 
         this.playTrack(this.sfxComplete)
             .then(() => {
-                const randomVO = voTracksArray[Math.floor(Math.random() * voTracksArray.length)];
+                const randomVO = this.getRandomTrack(voTracksArray, categoryKey);
                 return this.playTrack(randomVO);
             })
             .then(() => {
@@ -632,6 +651,7 @@ class AppController {
         // Lock action buttons during sequential play
         this.audio.playTransitionSequence(
             audioVariationArray,
+            className,
             () => this.lockActionButtons(true),
             () => this.lockActionButtons(false)
         );
@@ -660,6 +680,7 @@ class AppController {
 
         this.audio.playTransitionSequence(
             this.audio.ragu,
+            'ragu',
             () => this.lockActionButtons(true),
             () => this.lockActionButtons(false)
         );
