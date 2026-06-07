@@ -85,28 +85,3 @@ Proyek ini telah melalui proses optimasi menyeluruh untuk memastikan aplikasi da
     ```
 4.  Buka peramban (*browser*) Anda ke alamat `http://localhost:5173/`.
 5.  Berikan izin akses kamera/webcam saat peramban memunculkan prompt izin.
-
----
-
-## 🌐 Panduan Deploy ke Vercel
-
-Proyek ini menggunakan Vite, sehingga sangat mudah di-deploy ke Vercel:
-
-1.  Pasang Vercel CLI secara global (opsional):
-    ```bash
-    npm install -g vercel
-    ```
-2.  Jalankan perintah deploy di root direktori proyek:
-    ```bash
-    vercel
-    ```
-3.  Ikuti petunjuk konfigurasi proyek pada terminal:
-    *   *Set up and deploy?* **Yes**
-    *   *Link to existing project?* **No**
-    *   *Project name?* **pilahpilih**
-    *   *In which directory is your code located?* **./**
-    *   *Want to modify settings?* **No** (Vite akan terdeteksi secara otomatis dan mengatur perintah build ke `vite build` dan direktori output ke `dist`).
-4.  Setelah proses selesai, Vercel akan memberikan tautan *live* URL proyek Anda. Ganti tulisan `[TARUH_LINK_DEPLOYMENT_VERCEL_DISINI]` di baris atas dan baris ke-21 README ini dengan tautan tersebut.
-
----
-*Dibuat dengan cinta untuk menginspirasi generasi hijau masa depan Indonesia.* 🌍🌱
