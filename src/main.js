@@ -592,35 +592,35 @@ class AppController {
             targetState = 'plastic';
             audioVariationArray = this.audio.plastik;
             rainImages = [
-                '/assets/images/Sampah/Botol/Sampah Botol.png',
-                '/assets/images/Sampah/Botol/Sampah Botol 2.png',
-                '/assets/images/Sampah/Botol/Sampah Botol 3.png',
-                '/assets/images/Sampah/Botol/Sampah Botol 4.png',
-                '/assets/images/Sampah/Botol/Sampah Botol 5.png',
-                '/assets/images/Sampah/Botol/Sampah Botol 6.png'
+                '/assets/images/Sampah/Botol/Sampah Botol.webp',
+                '/assets/images/Sampah/Botol/Sampah Botol 2.webp',
+                '/assets/images/Sampah/Botol/Sampah Botol 3.webp',
+                '/assets/images/Sampah/Botol/Sampah Botol 4.webp',
+                '/assets/images/Sampah/Botol/Sampah Botol 5.webp',
+                '/assets/images/Sampah/Botol/Sampah Botol 6.webp'
             ];
             sizeMultiplier = 1.0;
         } else if (className === "Kertas") {
             targetState = 'paper';
             audioVariationArray = this.audio.kertas;
             rainImages = [
-                '/assets/images/Sampah/Kertas/Sampah Kertas.png',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 2.png',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 3.png',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 4.png',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 5.png'
+                '/assets/images/Sampah/Kertas/Sampah Kertas.webp',
+                '/assets/images/Sampah/Kertas/Sampah Kertas 2.webp',
+                '/assets/images/Sampah/Kertas/Sampah Kertas 3.webp',
+                '/assets/images/Sampah/Kertas/Sampah Kertas 4.webp',
+                '/assets/images/Sampah/Kertas/Sampah Kertas 5.webp'
             ];
             sizeMultiplier = 1.2;
         } else if (className === "Sisa Makanan") {
             targetState = 'organic';
             audioVariationArray = this.audio.organik;
             rainImages = [
-                '/assets/images/Sampah/Organik/Sampah Kulit Pisang.png',
-                '/assets/images/Sampah/Organik/Daun 1.png',
-                '/assets/images/Sampah/Organik/Daun 2.png',
-                '/assets/images/Sampah/Organik/Daun 3.png',
-                '/assets/images/Sampah/Organik/Daun 4.png',
-                '/assets/images/Sampah/Organik/Daun 5.png'
+                '/assets/images/Sampah/Organik/Sampah Kulit Pisang.webp',
+                '/assets/images/Sampah/Organik/Daun 1.webp',
+                '/assets/images/Sampah/Organik/Daun 2.webp',
+                '/assets/images/Sampah/Organik/Daun 3.webp',
+                '/assets/images/Sampah/Organik/Daun 4.webp',
+                '/assets/images/Sampah/Organik/Daun 5.webp'
             ];
             sizeMultiplier = 1.0;
         } else {
