@@ -1,6 +1,6 @@
 # 🤖 PilahPilih - Game Pemilahan Sampah Berbasis AI untuk Anak-Anak
 
-[![Vercel Deployment](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)]([TARUH_LINK_DEPLOYMENT_VERCEL_DISINI])
+[![Vercel Deployment](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)](https://pilahpilih.vercel.app)
 [![SDGs 4](https://img.shields.io/badge/SDGs-Goal_4-blue?style=for-the-badge)](https://sdgs.un.org/goals/goal4)
 [![SDGs 12](https://img.shields.io/badge/SDGs-Goal_12-green?style=for-the-badge)](https://sdgs.un.org/goals/goal12)
 
@@ -11,7 +11,7 @@ Aplikasi ini berkontribusi langsung pada pencapaian Tujuan Pembangunan Berkelanj
 *   ♻️ **SDG 12: Konsumsi dan Produksi yang Bertanggung Jawab** (*Responsible Consumption and Production*) — Menanamkan kesadaran memilah sampah sejak usia dini.
 
 > [!NOTE]  
-> **Link Website Live**: [[TARUH_LINK_DEPLOYMENT_VERCEL_DISINI]] (Tempel link deploy Vercel Anda di sini setelah proses deploy selesai!)
+> **Link Website Live**: https://pilahpilih.vercel.app (Aplikasi web interaktif live yang dapat diakses langsung oleh anak-anak dan guru).
 
 ---
 
