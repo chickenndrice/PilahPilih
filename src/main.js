@@ -5,6 +5,42 @@
  */
 import './style.css';
 
+// Pre-fetching visual assets to prevent network load delays during high-framerate transitions
+const IMAGES_TO_PRELOAD = [
+    '/assets/images/Robi/Robi Icon Transparent.webp',
+    '/assets/images/Robi/Robi Icon.webp',
+    '/assets/images/Robi/Robi_Coba_Lagi.webp',
+    '/assets/images/Robi/Robi_Kulit_Pisang.webp',
+    '/assets/images/Robi/Robi_Layar_Sambutan.webp',
+    '/assets/images/Robi/Robi_Sampah_Botol.webp',
+    '/assets/images/Robi/Robi_Sampah_Kertas.webp',
+    '/assets/images/Robi/Robi_Scanning.webp',
+    '/assets/images/Sampah/Botol/Sampah Botol 2.webp',
+    '/assets/images/Sampah/Botol/Sampah Botol 3.webp',
+    '/assets/images/Sampah/Botol/Sampah Botol 4.webp',
+    '/assets/images/Sampah/Botol/Sampah Botol 5.webp',
+    '/assets/images/Sampah/Botol/Sampah Botol 6.webp',
+    '/assets/images/Sampah/Botol/Sampah Botol.webp',
+    '/assets/images/Sampah/Kertas/Sampah Kertas 2.webp',
+    '/assets/images/Sampah/Kertas/Sampah Kertas 3.webp',
+    '/assets/images/Sampah/Kertas/Sampah Kertas 4.webp',
+    '/assets/images/Sampah/Kertas/Sampah Kertas 5.webp',
+    '/assets/images/Sampah/Kertas/Sampah Kertas.webp',
+    '/assets/images/Sampah/Organik/Daun 1.webp',
+    '/assets/images/Sampah/Organik/Daun 2.webp',
+    '/assets/images/Sampah/Organik/Daun 3.webp',
+    '/assets/images/Sampah/Organik/Daun 4.webp',
+    '/assets/images/Sampah/Organik/Daun 5.webp',
+    '/assets/images/Sampah/Organik/Sampah Kulit Pisang.webp'
+];
+
+function preloadImages() {
+    IMAGES_TO_PRELOAD.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
+}
+
 /**
  * ===== AUDIO MANAGER =====
  * Handles preloading, playing, volume adjustments, and terpusat stopping of all audio.
@@ -246,16 +282,21 @@ class ModelManager {
         this.aiModel = null;
         this.maxPredictions = 0;
         this.isPredicting = false;
+        this.isProcessing = false;
         this.predictionTimeout = null;
         this.lastPredictionTime = 0;
         this.predictionInterval = 120; // 120ms throttle prevents 60fps thermal throttles (saves up to 85% CPU/GPU)
+        this.isModelReady = false;
     }
 
     /**
-     * Loads the model in the background.
+     * Loads the model in the background and warms it up.
      */
-    async loadModel() {
-        if (this.aiModel) return;
+    async loadModel(onModelReadyCallback) {
+        if (this.aiModel) {
+            if (onModelReadyCallback) onModelReadyCallback();
+            return;
+        }
 
         const modelURL = this.modelUrl + "model.json";
         const metadataURL = this.modelUrl + "metadata.json";
@@ -264,10 +305,21 @@ class ModelManager {
             if (window.tmImage) {
                 this.aiModel = await window.tmImage.load(modelURL, metadataURL);
                 this.maxPredictions = this.aiModel.getTotalClasses();
-                console.log("AI Model loaded successfully");
+                console.log("AI Model loaded successfully, starting WebGL warmup...");
+                
+                // Warm up the model with a blank canvas to compile shaders before countdown reaches 1
+                const dummyCanvas = document.createElement('canvas');
+                dummyCanvas.width = 224;
+                dummyCanvas.height = 224;
+                await this.aiModel.predict(dummyCanvas);
+                
+                this.isModelReady = true;
+                console.log("AI Model warmed up and ready");
+                
+                if (onModelReadyCallback) onModelReadyCallback();
             } else {
                 console.warn("window.tmImage not loaded yet. Retrying in 1s...");
-                setTimeout(() => this.loadModel(), 1000);
+                setTimeout(() => this.loadModel(onModelReadyCallback), 1000);
             }
         } catch (e) {
             console.error("Error loading Teachable Machine model:", e);
@@ -279,6 +331,7 @@ class ModelManager {
      */
     startPrediction(videoEl, onSuccess, onUncertain) {
         this.isPredicting = true;
+        this.isProcessing = false;
         this.lastPredictionTime = 0;
 
         // Switch to uncertain state if no high confidence object is detected in 6 seconds
@@ -292,10 +345,14 @@ class ModelManager {
         const loop = (timestamp) => {
             if (!this.isPredicting) return;
 
-            // Throttling logic
-            if (timestamp - this.lastPredictionTime >= this.predictionInterval) {
+            // Throttling logic and concurrency guard
+            if (!this.isProcessing && (timestamp - this.lastPredictionTime >= this.predictionInterval)) {
                 this.lastPredictionTime = timestamp;
-                this.predict(videoEl, onSuccess);
+                this.isProcessing = true;
+                
+                this.predict(videoEl, onSuccess).finally(() => {
+                    this.isProcessing = false;
+                });
             }
 
             requestAnimationFrame(loop);
@@ -309,6 +366,10 @@ class ModelManager {
 
         try {
             const prediction = await this.aiModel.predict(videoEl);
+            
+            // Critical check: if prediction was stopped while in-flight, discard results
+            if (!this.isPredicting) return;
+
             for (let i = 0; i < this.maxPredictions; i++) {
                 const className = prediction[i].className;
                 const probability = prediction[i].probability;
@@ -446,8 +507,23 @@ class AppController {
         this.bindEvents();
         this.updateVolumeUI();
         
-        // Kick off model load immediately in background
-        await this.model.loadModel();
+        // Preload all visual WebP assets into cache to prevent transition render stuttering
+        preloadImages();
+
+        // Lock button during asynchronous model fetch & WebGL context compilation (warmup)
+        const welcomeStartBtn = document.getElementById('btn-welcome-start');
+        if (welcomeStartBtn) {
+            welcomeStartBtn.disabled = true;
+            welcomeStartBtn.textContent = "⌛ MEMUAT MODEL AI...";
+        }
+
+        // Kick off model load immediately in background and attach ready callback
+        await this.model.loadModel(() => {
+            if (welcomeStartBtn) {
+                welcomeStartBtn.disabled = false;
+                welcomeStartBtn.textContent = "▶ MULAI MAIN";
+            }
+        });
     }
 
     /**
@@ -603,6 +679,9 @@ class AppController {
         if (this.isTransitioningState) return;
         this.isTransitioningState = true;
 
+        // Cease WebGL predictions instantly to release CPU/GPU resource load during animation
+        this.model.stopPrediction();
+
         let targetState = '';
         let audioVariationArray = [];
         let rainImages = [];
@@ -677,6 +756,9 @@ class AppController {
     triggerUncertainState() {
         if (this.isTransitioningState) return;
         this.isTransitioningState = true;
+
+        // Cease WebGL predictions instantly
+        this.model.stopPrediction();
 
         this.audio.playTransitionSequence(
             this.audio.ragu,
