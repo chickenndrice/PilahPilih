@@ -460,7 +460,8 @@ class TransitionManager {
 
     /**
      * Renders falling object particles for interactive state changes.
-        triggerRain(images, sizeMultiplier = 1.0, onHalfway, onComplete) {
+     */
+    triggerRain(images, sizeMultiplier = 1.0, onHalfway, onComplete) {
         this.cleanup();
 
         // Create rain container
