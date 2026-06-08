@@ -34,6 +34,51 @@ const IMAGES_TO_PRELOAD = [
     '/assets/images/Sampah/Organik/Sampah Kulit Pisang.webp'
 ];
 
+/**
+ * Global Configuration for Waste Categories
+ * Maps the AI model classes to their respective states, audio variations, and transition particle images.
+ */
+const WASTE_CATEGORIES = {
+    "Plastik": {
+        stateKey: 'plastic',
+        audioKey: 'plastik',
+        sizeMultiplier: 1.0,
+        rainImages: [
+            '/assets/images/Sampah/Botol/Sampah Botol.webp',
+            '/assets/images/Sampah/Botol/Sampah Botol 2.webp',
+            '/assets/images/Sampah/Botol/Sampah Botol 3.webp',
+            '/assets/images/Sampah/Botol/Sampah Botol 4.webp',
+            '/assets/images/Sampah/Botol/Sampah Botol 5.webp',
+            '/assets/images/Sampah/Botol/Sampah Botol 6.webp'
+        ]
+    },
+    "Kertas": {
+        stateKey: 'paper',
+        audioKey: 'kertas',
+        sizeMultiplier: 1.2,
+        rainImages: [
+            '/assets/images/Sampah/Kertas/Sampah Kertas.webp',
+            '/assets/images/Sampah/Kertas/Sampah Kertas 2.webp',
+            '/assets/images/Sampah/Kertas/Sampah Kertas 3.webp',
+            '/assets/images/Sampah/Kertas/Sampah Kertas 4.webp',
+            '/assets/images/Sampah/Kertas/Sampah Kertas 5.webp'
+        ]
+    },
+    "Sisa Makanan": {
+        stateKey: 'organic',
+        audioKey: 'organik',
+        sizeMultiplier: 1.0,
+        rainImages: [
+            '/assets/images/Sampah/Organik/Sampah Kulit Pisang.webp',
+            '/assets/images/Sampah/Organik/Daun 1.webp',
+            '/assets/images/Sampah/Organik/Daun 2.webp',
+            '/assets/images/Sampah/Organik/Daun 3.webp',
+            '/assets/images/Sampah/Organik/Daun 4.webp',
+            '/assets/images/Sampah/Organik/Daun 5.webp'
+        ]
+    }
+};
+
 function preloadImages() {
     IMAGES_TO_PRELOAD.forEach(url => {
         const img = new Image();
@@ -43,38 +88,47 @@ function preloadImages() {
 
 /**
  * ===== AUDIO MANAGER =====
- * Handles preloading, playing, volume adjustments, and terpusat stopping of all audio.
+ * Handles preloading, playing, volume adjustments, and centralized stopping of all audio.
  */
 class AudioManager {
     constructor() {
         this.volume = 0.5; // Default 50% volume
         
-        // Preload sound effects and Robi voice lines
+        // Preload sound effects and Robi greeting
         this.sfxComplete = this.loadAudio('/assets/audio/sound-fx-complete-v1.mp3');
         this.pembuka = this.loadAudio('/assets/audio/1-pembuka.mp3');
         
-        this.plastik = [
-            this.loadAudio('/assets/audio/2-plastik-v1.mp3'),
-            this.loadAudio('/assets/audio/3-plastik-v2.mp3')
-        ];
-        this.kertas = [
-            this.loadAudio('/assets/audio/4-kertas-v1.mp3'),
-            this.loadAudio('/assets/audio/5-kertas-v2.mp3')
-        ];
-        this.organik = [
-            this.loadAudio('/assets/audio/6-organik-v1.mp3'),
-            this.loadAudio('/assets/audio/7-organik-v2.mp3')
-        ];
-        this.ragu = [
-            this.loadAudio('/assets/audio/8-ragu-v1.mp3'),
-            this.loadAudio('/assets/audio/9-ragu-v2.mp3'),
-            this.loadAudio('/assets/audio/10-ragu-v3.mp3')
-        ];
+        // Grouped track configurations for easy maintainability
+        this.tracks = {
+            plastik: [
+                this.loadAudio('/assets/audio/2-plastik-v1.mp3'),
+                this.loadAudio('/assets/audio/3-plastik-v2.mp3')
+            ],
+            kertas: [
+                this.loadAudio('/assets/audio/4-kertas-v1.mp3'),
+                this.loadAudio('/assets/audio/5-kertas-v2.mp3')
+            ],
+            organik: [
+                this.loadAudio('/assets/audio/6-organik-v1.mp3'),
+                this.loadAudio('/assets/audio/7-organik-v2.mp3')
+            ],
+            ragu: [
+                this.loadAudio('/assets/audio/8-ragu-v1.mp3'),
+                this.loadAudio('/assets/audio/9-ragu-v2.mp3'),
+                this.loadAudio('/assets/audio/10-ragu-v3.mp3')
+            ]
+        };
 
         this.playingTracks = new Set();
         this.hasPlayedOpening = false;
         this.lastPlayedMap = new Map();
     }
+
+    // Getters for backward compatibility and clean references
+    get plastik() { return this.tracks.plastik; }
+    get kertas() { return this.tracks.kertas; }
+    get organik() { return this.tracks.organik; }
+    get ragu() { return this.tracks.ragu; }
 
     loadAudio(src) {
         const audio = new Audio(src);
@@ -89,9 +143,9 @@ class AudioManager {
     setVolume(value) {
         this.volume = value / 100;
         const allTracks = [
-            this.sfxComplete, this.pembuka,
-            ...this.plastik, ...this.kertas,
-            ...this.organik, ...this.ragu
+            this.sfxComplete,
+            this.pembuka,
+            ...Object.values(this.tracks).flat()
         ];
         allTracks.forEach(track => {
             track.volume = this.volume;
@@ -406,17 +460,18 @@ class TransitionManager {
 
     /**
      * Renders falling object particles for interactive state changes.
-     */
-    triggerRain(images, sizeMultiplier = 1.0, onHalfway, onComplete) {
+        triggerRain(images, sizeMultiplier = 1.0, onHalfway, onComplete) {
         this.cleanup();
 
         // Create rain container
         const container = document.createElement('div');
         container.className = 'rain-container';
-        document.body.appendChild(container);
         this.activeContainer = container;
 
+        // Use DocumentFragment to optimize performance and prevent DOM layout thrashing
+        const fragment = document.createDocumentFragment();
         const particleCount = 100;
+        
         for (let i = 0; i < particleCount; i++) {
             const img = document.createElement('img');
             img.src = images[i % images.length];
@@ -438,8 +493,11 @@ class TransitionManager {
             const rotEnd = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 360 + 180);
             img.style.setProperty('--rot-end', `${rotEnd}deg`);
 
-            container.appendChild(img);
+            fragment.appendChild(img);
         }
+
+        container.appendChild(fragment);
+        document.body.appendChild(container);
 
         // State switch trigger halfway through animation (~1800ms)
         setTimeout(() => {
@@ -538,54 +596,56 @@ class AppController {
         }
 
         const appContainer = document.querySelector('.app');
-        if (appContainer) {
-            appContainer.addEventListener('click', (e) => {
-                const target = e.target.closest('[class]');
-                if (!target) return;
+        if (!appContainer) return;
 
-                // Handle Mulai / Lanjut / Coba Lagi
-                if (target.matches('.btn-start-game')) {
-                    if (target.id === 'btn-welcome-start') {
-                        this.audio.playWelcome(target, () => {
-                            this.switchState('scanning');
-                        });
-                    } else {
-                        this.switchState('scanning');
-                    }
-                    return;
-                }
-
-                // Handle Berhenti / pause
-                if (target.matches('.btn-stop')) {
-                    this.switchState('welcome');
-                    return;
-                }
-
-                // Guide guide popup mockup
-                if (target.matches('.btn-guide')) {
-                    alert('Fitur Panduan akan ditampilkan dalam bentuk modal atau overlay di versi final.');
-                    return;
-                }
-
-                // Volume slider pop-up toggling
-                if (target.matches('.btn-volume')) {
-                    const popup = document.getElementById('vol-popup');
-                    if (popup) popup.classList.toggle('show');
-                    return;
-                }
-
-                // Close volume popup if clicking outside its wrapper
+        appContainer.addEventListener('click', (e) => {
+            // Volume Pop-up Toggling
+            const volumeBtn = e.target.closest('.btn-volume');
+            if (volumeBtn) {
                 const popup = document.getElementById('vol-popup');
-                if (popup && popup.classList.contains('show') && !e.target.closest('.vol-wrapper')) {
-                    popup.classList.remove('show');
-                }
+                if (popup) popup.classList.toggle('show');
+                return;
+            }
 
-                // Viewport click triggers uncertain (fallback mockup test helper)
-                if (target.closest('#vp-scan') && this.states.scanning.classList.contains('active') && !target.closest('.bin')) {
-                    this.triggerUncertainState();
+            // Close volume popup if clicking outside its wrapper
+            const popup = document.getElementById('vol-popup');
+            if (popup && popup.classList.contains('show') && !e.target.closest('.vol-wrapper')) {
+                popup.classList.remove('show');
+            }
+
+            // Handle Mulai / Lanjut / Coba Lagi
+            const startGameBtn = e.target.closest('.btn-start-game');
+            if (startGameBtn) {
+                if (startGameBtn.id === 'btn-welcome-start') {
+                    this.audio.playWelcome(startGameBtn, () => {
+                        this.switchState('scanning');
+                    });
+                } else {
+                    this.switchState('scanning');
                 }
-            });
-        }
+                return;
+            }
+
+            // Handle Berhenti / Pause
+            const stopBtn = e.target.closest('.btn-stop');
+            if (stopBtn) {
+                this.switchState('welcome');
+                return;
+            }
+
+            // Guide Popup Mockup
+            const guideBtn = e.target.closest('.btn-guide');
+            if (guideBtn) {
+                alert('Fitur Panduan akan ditampilkan dalam bentuk modal atau overlay di versi final.');
+                return;
+            }
+
+            // Viewport click triggers uncertain (fallback mockup test helper)
+            const scanViewport = e.target.closest('#vp-scan');
+            if (scanViewport && this.states.scanning.classList.contains('active') && !e.target.closest('.bin')) {
+                this.triggerUncertainState();
+            }
+        });
     }
 
     /**
@@ -682,50 +742,14 @@ class AppController {
         // Cease WebGL predictions instantly to release CPU/GPU resource load during animation
         this.model.stopPrediction();
 
-        let targetState = '';
-        let audioVariationArray = [];
-        let rainImages = [];
-        let sizeMultiplier = 1.0;
-
-        if (className === "Plastik") {
-            targetState = 'plastic';
-            audioVariationArray = this.audio.plastik;
-            rainImages = [
-                '/assets/images/Sampah/Botol/Sampah Botol.webp',
-                '/assets/images/Sampah/Botol/Sampah Botol 2.webp',
-                '/assets/images/Sampah/Botol/Sampah Botol 3.webp',
-                '/assets/images/Sampah/Botol/Sampah Botol 4.webp',
-                '/assets/images/Sampah/Botol/Sampah Botol 5.webp',
-                '/assets/images/Sampah/Botol/Sampah Botol 6.webp'
-            ];
-            sizeMultiplier = 1.0;
-        } else if (className === "Kertas") {
-            targetState = 'paper';
-            audioVariationArray = this.audio.kertas;
-            rainImages = [
-                '/assets/images/Sampah/Kertas/Sampah Kertas.webp',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 2.webp',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 3.webp',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 4.webp',
-                '/assets/images/Sampah/Kertas/Sampah Kertas 5.webp'
-            ];
-            sizeMultiplier = 1.2;
-        } else if (className === "Sisa Makanan") {
-            targetState = 'organic';
-            audioVariationArray = this.audio.organik;
-            rainImages = [
-                '/assets/images/Sampah/Organik/Sampah Kulit Pisang.webp',
-                '/assets/images/Sampah/Organik/Daun 1.webp',
-                '/assets/images/Sampah/Organik/Daun 2.webp',
-                '/assets/images/Sampah/Organik/Daun 3.webp',
-                '/assets/images/Sampah/Organik/Daun 4.webp',
-                '/assets/images/Sampah/Organik/Daun 5.webp'
-            ];
-            sizeMultiplier = 1.0;
-        } else {
+        const categoryConfig = WASTE_CATEGORIES[className];
+        if (!categoryConfig) {
             this.triggerUncertainState();
             return;
         }
+
+        const { stateKey, audioKey, sizeMultiplier, rainImages } = categoryConfig;
+        const audioVariationArray = this.audio.tracks[audioKey];
 
         // Lock action buttons during sequential play
         this.audio.playTransitionSequence(
@@ -736,7 +760,7 @@ class AppController {
         );
 
         // Update confidence percentage text in results viewport
-        const targetStateEl = this.states[targetState];
+        const targetStateEl = this.states[stateKey];
         if (targetStateEl) {
             const pctEl = targetStateEl.querySelector('.pct');
             if (pctEl) {
@@ -746,7 +770,7 @@ class AppController {
 
         // Launch transition rain and transition states halfway
         this.transition.triggerRain(rainImages, sizeMultiplier, () => {
-            this.switchState(targetState);
+            this.switchState(stateKey);
         });
     }
 
@@ -761,7 +785,7 @@ class AppController {
         this.model.stopPrediction();
 
         this.audio.playTransitionSequence(
-            this.audio.ragu,
+            this.audio.tracks.ragu,
             'ragu',
             () => this.lockActionButtons(true),
             () => this.lockActionButtons(false)
