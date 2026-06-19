@@ -1157,32 +1157,32 @@ body::before {
   /* Result screen speech bubble alignment to prevent cutting off on mobile */
   .bubble.bot-left {
     top: 25px;
-    left: 5%;
-    right: 5%;
-    width: 90%;
-    max-width: 90%;
+    left: 15px;
+    right: 15px;
+    width: auto;
+    max-width: none;
     padding: 12px 20px;
     font-size: 16px;
   }
 
   .bubble.bot-left::after {
-    left: 40px;
+    left: 35px;
     bottom: -13px;
     right: auto;
   }
 
   .bubble.bot-right {
     top: 25px;
-    left: 5%;
-    right: 5%;
-    width: 90%;
-    max-width: 90%;
+    left: 15px;
+    right: 15px;
+    width: auto;
+    max-width: none;
     padding: 12px 20px;
     font-size: 16px;
   }
 
   .bubble.bot-right::after {
-    right: 40px;
+    right: 35px;
     bottom: -13px;
     left: auto;
   }
@@ -1191,22 +1191,28 @@ body::before {
   .robi-feedback.left {
     top: 130px;
     right: auto;
-    left: -15px;
-    width: 140px;
+    left: 10px;
+    width: 130px;
     z-index: 3;
   }
 
   .robi-feedback.right {
     top: 130px;
     left: auto;
-    right: -15px;
-    width: 140px;
+    right: 10px;
+    width: 130px;
     z-index: 3;
   }
 
   /* Scale down special Robi holding bottle variant */
   .robi-feedback.left.robi-bottle {
-    width: 120px;
+    width: 110px;
+  }
+
+  /* Shift the central object circle slightly to the right to balance the side-by-side layout with Robi */
+  .viewport:not(.scanning):not(.uncertain) .obj {
+    position: relative;
+    left: 20px;
   }
 
   .obj {
