@@ -1154,6 +1154,61 @@ body::before {
     font-size: 15px
   }
 
+  /* Result screen speech bubble alignment to prevent cutting off on mobile */
+  .bubble.bot-left {
+    top: 25px;
+    left: 5%;
+    right: 5%;
+    width: 90%;
+    max-width: 90%;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+
+  .bubble.bot-left::after {
+    left: 40px;
+    bottom: -13px;
+    right: auto;
+  }
+
+  .bubble.bot-right {
+    top: 25px;
+    left: 5%;
+    right: 5%;
+    width: 90%;
+    max-width: 90%;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+
+  .bubble.bot-right::after {
+    right: 40px;
+    bottom: -13px;
+    left: auto;
+  }
+
+  /* Robi feedback alignment to prevent cutting off on mobile */
+  .robi-feedback.left {
+    top: 130px;
+    right: auto;
+    left: -15px;
+    width: 140px;
+    z-index: 3;
+  }
+
+  .robi-feedback.right {
+    top: 130px;
+    left: auto;
+    right: -15px;
+    width: 140px;
+    z-index: 3;
+  }
+
+  /* Scale down special Robi holding bottle variant */
+  .robi-feedback.left.robi-bottle {
+    width: 120px;
+  }
+
   .obj {
     width: 160px;
     height: 160px
