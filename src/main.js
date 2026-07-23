@@ -634,10 +634,26 @@ class AppController {
                 return;
             }
 
-            // Guide Popup Mockup
+            // Guide Popup
             const guideBtn = e.target.closest('.btn-guide');
             if (guideBtn) {
-                alert('Fitur Panduan akan ditampilkan dalam bentuk modal atau overlay di versi final.');
+                const modal = document.getElementById('guide-modal');
+                if (modal) modal.style.display = 'flex';
+                return;
+            }
+
+            // Close Guide Modal
+            const closeGuideBtn = e.target.closest('.btn-close-guide') || e.target.closest('.btn-close-guide-main');
+            if (closeGuideBtn) {
+                const modal = document.getElementById('guide-modal');
+                if (modal) modal.style.display = 'none';
+                return;
+            }
+
+            // Close Guide Modal when clicking outside card (on overlay backdrop)
+            const guideModal = document.getElementById('guide-modal');
+            if (guideModal && guideModal.style.display === 'flex' && e.target === guideModal) {
+                guideModal.style.display = 'none';
                 return;
             }
 
