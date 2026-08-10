@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>PilahPilih — Evaluasi Model (Dev Tool)</title>
+<style>
+    :root {
+        --bg: #0f172a;
+        --panel: #1e293b;
+        --border: #334155;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --accent: #22c55e;
+        --accent-dark: #16a34a;
+        --danger: #f87171;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        padding: 24px;
+        line-height: 1.5;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .banner {
+        background: #422006;
+        border: 1px solid #92400e;
+        color: #fde68a;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 24px;
+    }
+    section {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+    }
+    section h2 { font-size: 1.05rem; margin: 0 0 12px; }
+    .inputs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+    }
+    .input-card {
+        border: 1px dashed var(--border);
+        border-radius: 8px;
+        padding: 12px;
+    }
+    .input-card label { display: block; font-weight: 600; margin-bottom: 8px; }
+    .input-card input[type="file"] { width: 100%; font-size: 0.85rem; color: var(--muted); }
+    .file-count { margin-top: 6px; font-size: 0.8rem; color: var(--muted); }
+    #status { font-size: 0.9rem; color: var(--muted); margin: 12px 0; }
+    #progress { font-size: 0.9rem; color: var(--accent); margin: 12px 0; }
+    button {
+        background: var(--accent);
+        color: #052e16;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 18px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+    button:hover:not(:disabled) { background: var(--accent-dark); }
+    button:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+    button.secondary { background: var(--border); color: var(--text); margin-right: 8px; }
+    button.secondary:hover:not(:disabled) { background: #475569; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+    table th, table td { border: 1px solid var(--border); padding: 6px 10px; text-align: center; }
+    table th { background: #0b1220; }
+    table td:first-child, table th:first-child { text-align: left; }
+    .cm-diag { background: rgba(34, 197, 94, 0.18); font-weight: 700; }
+    .cm-divider td { border: none; padding: 4px 0; }
+    #summary p { margin: 4px 0; }
+    #results[hidden], #progress[hidden] { display: none; }
+    .table-scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>PilahPilih — Evaluasi Model (Dev Tool)</h1>
+    <p class="subtitle">Alat evaluasi batch internal untuk mengukur akurasi model TensorFlow.js/Teachable Machine terhadap dataset test berlabel. Tidak ditautkan dari aplikasi utama.</p>
+
+    <div class="banner">
+        Evaluasi ini memakai <strong>argmax murni</strong> (tanpa threshold 0.95 yang dipakai UI real-time), sehingga setiap gambar test selalu mendapat satu prediksi untuk dihitung ke confusion matrix.
+    </div>
+
+    <section>
+        <h2>1. Pilih Dataset Test (berlabel)</h2>
+        <div class="inputs-grid">
+            <div class="input-card">
+                <label for="input-plastik">Plastik</label>
+                <input type="file" id="input-plastik" accept="image/*" multiple>
+                <div class="file-count" id="count-plastik">0 gambar dipilih</div>
+            </div>
+            <div class="input-card">
+                <label for="input-kertas">Kertas</label>
+                <input type="file" id="input-kertas" accept="image/*" multiple>
+                <div class="file-count" id="count-kertas">0 gambar dipilih</div>
+            </div>
+            <div class="input-card">
+                <label for="input-organik">Sisa Makanan</label>
+                <input type="file" id="input-organik" accept="image/*" multiple>
+                <div class="file-count" id="count-organik">0 gambar dipilih</div>
+            </div>
+        </div>
+        <p class="subtitle">Tip: di dialog pemilihan file, gunakan Ctrl+A (atau Cmd+A) untuk memilih semua gambar dalam satu folder sekaligus.</p>
+    </section>
+
+    <section>
+        <h2>2. Jalankan Evaluasi</h2>
+        <div id="status">Memuat model AI...</div>
+        <div id="progress" hidden></div>
+        <button id="btn-run" disabled>Jalankan Evaluasi</button>
+    </section>
+
+    <section id="results" hidden>
+        <h2>3. Hasil</h2>
+        <div id="summary"></div>
+
+        <h3>Confusion Matrix</h3>
+        <div class="table-scroll" id="confusion-matrix"></div>
+
+        <h3>Precision / Recall / F1 per Kelas</h3>
+        <div class="table-scroll" id="metrics-table"></div>
+
+        <h3>Gambar Salah Klasifikasi</h3>
+        <div class="table-scroll" id="misclassified"></div>
+
+        <div style="margin-top: 16px;">
+            <button class="secondary" id="btn-export-csv">Export CSV</button>
+            <button class="secondary" id="btn-export-json">Export JSON</button>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+<script type="module" src="/src/evaluate.js"></script>
+</body>
+</html>
