@@ -56,6 +56,7 @@ export class ModelManager {
      * Commences active scanning loops and fallback timeout triggers.
      */
     startPrediction(videoEl, onSuccess, onUncertain) {
+        this.scanStartTime = performance.now();
         this.isPredicting = true;
         this.isProcessing = false;
         this.lastPredictionTime = 0;
@@ -102,6 +103,8 @@ export class ModelManager {
 
                 // Threshold confidence > 95%
                 if (probability > 0.95) {
+                    const elapsedMs = performance.now() - this.scanStartTime;
+                    console.log(`[response-time] ${elapsedMs.toFixed(0)}ms`);
                     this.stopPrediction();
                     if (onSuccess) onSuccess(className, probability);
                     break;
